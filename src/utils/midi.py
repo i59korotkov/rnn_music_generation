@@ -171,12 +171,15 @@ def generate_notes(
         outputs.append(input.detach().cpu().numpy())
     
     # Join outputs
-    outputs = np.concatenate(outputs, axis=1)[0]
-    # Join sample and generated notes
-    outputs = np.concatenate(
-        (sample.detach().cpu().numpy(), outputs),
-        axis=0,
-    )
+    if len(outputs) > 0:
+        outputs = np.concatenate(outputs, axis=1)[0]
+        # Join sample and generated notes
+        outputs = np.concatenate(
+            (sample.detach().cpu().numpy(), outputs),
+            axis=0,
+        )
+    else:
+        outputs = sample.detach().cpu().numpy()
 
     # Convert model output to tokens
     tokens = collections.defaultdict(list)
