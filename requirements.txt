@@ -6,3 +6,4 @@ pyfluidsynth
 matplotlib
 seaborn
 tqdm
+tensorboard
