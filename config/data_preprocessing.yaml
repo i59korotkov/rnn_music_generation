@@ -1,0 +1,5 @@
+dataset_path: 'data/maestro-v3.0.0'
+train_size: 0.9
+resolution: 0.2
+train_tokens_path: 'data/train_tokens.csv'
+val_tokens_path: 'data/val_tokens.csv'
