@@ -86,38 +86,6 @@ def validate_model(
     return val_loss
 
 
-def create_datasets(config: dict) -> Tuple[NotesDataset, NotesDataset]:
-    # Parse MIDI files
-    train_size = config['train_size']
-    resolution = config['resolution']
-
-    # Parse train tokens
-    train_tokens = []
-    for f in tqdm(filenames[:int(len(filenames) * train_size)], desc='Parsing tokens from MIDI files'):
-        notes = midi_to_notes(f)
-        tokens = tokenize_notes(notes, resolution)
-        tokens['filename'] = f
-        train_tokens.append(tokens)
-    train_tokens = pd.concat(train_tokens)
-    train_tokens = train_tokens.reset_index(drop=True)
-
-    # Parse val tokens
-    val_tokens = []
-    for f in tqdm(filenames[int(len(filenames) * train_size):], desc='Parsing tokens from MIDI files'):
-        notes = midi_to_notes(f)
-        tokens = tokenize_notes(notes, resolution)
-        tokens['filename'] = f
-        val_tokens.append(tokens)
-    val_tokens = pd.concat(val_tokens)
-    val_tokens = val_tokens.reset_index(drop=True)
-
-    # Create datasets
-    train_dataset = NotesDataset(train_tokens)
-    val_dataset = NotesDataset(val_tokens)
-
-    return train_dataset, val_dataset
-
-
 def plot_piano_roll(notes: pd.DataFrame, time: Optional[float] = None):
     if time is not None:
         title = f'First {time} seconds'
@@ -146,14 +114,11 @@ if __name__ == '__main__':
     device = config['device']
 
     # Create tensorboard writer
-    writer = SummaryWriter(f'runs/{config["experiment_name"]}')
-    
-    # Get all MIDI files from dataset folder
-    filenames = list(map(str, pathlib.Path(config['dataset_path']).rglob('*.mid*')))
-    print(f'{len(filenames)} MIDI files found in dataset folder.')
+    writer = SummaryWriter(f'runs/{config["experiment_name"]}')    
 
     # Create datasets and loaders
-    train_dataset, val_dataset = create_datasets(config)
+    train_dataset = NotesDataset(pd.read_csv(config['train_tokens_path']))
+    val_dataset = NotesDataset(pd.read_csv(config['val_tokens_path']))
     train_loader = DataLoader(train_dataset, batch_size=1, shuffle=True)
     val_loader = DataLoader(val_dataset, batch_size=1, shuffle=True)
     

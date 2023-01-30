@@ -1,9 +1,9 @@
-experiment_name: 'rnn_512n_4l_adam3e-4_cos10'
+experiment_name: 'rnn_512n_4l_weight20'
 num_epochs: 50
 device: 'cuda:0'
-train_size: 0.9
 resolution: 0.2
-dataset_path: 'data/maestro-v3.0.0'
+train_tokens_path: 'data/train_tokens.csv'
+val_tokens_path: 'data/val_tokens.csv'
 model:
   hidden_size: 512
   num_layers:  4
@@ -14,4 +14,4 @@ scheduler:
   period: 10
   factor: 1
 loss:
-  pos_weight: 32
+  pos_weight: 20
