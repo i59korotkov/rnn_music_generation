@@ -125,6 +125,10 @@ if __name__ == '__main__':
     # Create model
     model = RNN(PITCH_CNT, 256, 4).to(device)
 
+    # Load pretrained weights if specified
+    if config['pretrained_weights_path'] is not None:
+        model.load_state_dict(torch.load(config['pretrained_weights_path']))
+
     # Create loss, optimizer and scheduler
     loss = nn.BCEWithLogitsLoss(
         pos_weight=torch.ones((128,)) * config['loss']['pos_weight']

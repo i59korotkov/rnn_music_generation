@@ -1,4 +1,5 @@
 experiment_name: 'rnn_512n_4l_weight20'
+pretrained_weights_path: null
 num_epochs: 50
 device: 'cuda:0'
 resolution: 0.2
