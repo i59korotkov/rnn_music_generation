@@ -149,7 +149,7 @@ if __name__ == '__main__':
     sample_tensor_start = val_dataset[0][0][:10]
 
     best_val_loss = None
-    for epoch in range(50):
+    for epoch in range(config['num_epochs']):
         print(f'\nEpoch {epoch + 1}')
 
         # Train model for one epoch
