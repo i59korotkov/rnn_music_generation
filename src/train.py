@@ -123,7 +123,7 @@ if __name__ == '__main__':
     val_loader = DataLoader(val_dataset, batch_size=1, shuffle=True)
     
     # Create model
-    model = RNN(PITCH_CNT, 256, 4).to(device)
+    model = RNN(PITCH_CNT, config['model']['hidden_size'], config['model']['num_layers']).to(device)
 
     # Load pretrained weights if specified
     if config['pretrained_weights_path'] is not None:
